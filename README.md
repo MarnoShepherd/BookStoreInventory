@@ -30,7 +30,7 @@ To use the Ebookstore Inventory Management System locally, follow these steps:
 ![Main Menu](screenshots/main_menu.png)
 ![Adding a Book](screenshots/add_book.png)
 ![Updating a Book](screenshots/update_book.png)
-![Searching for Books](screenshots/search_books.png)
 ![Deleting Books](screenshots/delete_books.png)
+![Searching for Books](screenshots/search_books.png)
 
 This Bookstore Inventory Management System was developed to provide a user-friendly and efficient way to manage bookstore inventories. Whether you're a bookstore owner, clerk, or developer, this application simplifies inventory management tasks and contributes to a smoother operation. If you have any questions or suggestions, feel free to reach out to marnoshepherd19@gmail.com or github.com/MarnoShepherd.
