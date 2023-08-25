@@ -69,73 +69,76 @@ def search_book(conn, title):
     cursor.close()  # Close the cursor after executing the query
     return books
 
+#Handles input parsing and validation for integer values.
+def get_integer_input(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+            return value
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
+
+
 # Main function to run the program
 def main():
-    try:
-        conn = connect_to_database()
-        create_table(conn)
-        populate_table(conn)
+    conn = connect_to_database()
+    create_table(conn)
+    populate_table(conn)
 
-        while True:
-            print("\nBookstore Clerk Menu:")
-            print("1. Enter book")
-            print("2. Update book")
-            print("3. Delete book")
-            print("4. Search books")
-            print("0. Exit")
-            choice = input("Enter your choice: ")
+    while True:
+        print("\nBookstore Clerk Menu:")
+        print("1. Enter book")
+        print("2. Update book")
+        print("3. Delete book")
+        print("4. Search books")
+        print("0. Exit")
+        choice = input("Enter your choice: ")
 
-            if choice == '1':
-                try:
-                    title = input("Enter the title: ")
-                    author = input("Enter the author: ")
-                    qty = int(input("Enter the quantity: "))
-                    add_book(conn, (title, author, qty))
-                    print("Book added successfully.")
-                except ValueError:
-                    print("Invalid input. Please enter a valid quantity.")
+        if choice == '1':
+            try:
+                title = input("Enter the title: ")
+                author = input("Enter the author: ")
+                qty = get_integer_input("Enter the quantity: ")
+                add_book(conn, (title, author, qty))
+                print("Book added successfully.")
+            except ValueError:
+                print("Invalid input. Please enter a valid quantity.")
 
-            elif choice == '2':
-                try:
-                    book_id = int(input("Enter the book ID: "))
-                    new_qty = int(input("Enter the new quantity: "))
-                    update_book(conn, book_id, new_qty)
-                    print("Book information updated successfully.")
-                except ValueError:
-                    print("Invalid input. Please enter valid numeric values.")
+        elif choice == '2':
+            try:
+                book_id = get_integer_input("Enter the book ID: ")
+                new_qty = get_integer_input("Enter the new quantity: ")
 
-            elif choice == '3':
-                try:
-                    book_id = int(input("Enter the book ID: "))
-                    delete_book(conn, book_id)
-                    print("Book deleted successfully.")
-                except ValueError:
-                    print("Invalid input. Please enter a valid book ID.")
+                update_book(conn, book_id, new_qty)
+                print("Book information updated successfully.")
+            except ValueError:
+                print("Invalid input. Please enter valid numeric values.")
 
-            elif choice == '4':
-                title = input("Enter the book title (or part of it): ")
-                books = search_book(conn, title)
-                if books:
-                    print("Search results:")
-                    for book in books:
-                        print(f"ID: {book[0]}, Title: {book[1]}, Author: {book[2]}, Qty: {book[3]}")
-                else:
-                    print("No books found matching the search criteria.")
+        elif choice == '3':
+            try:
+                book_id = int(input("Enter the book ID: "))
+                delete_book(conn, book_id)
+                print("Book deleted successfully.")
+            except ValueError:
+                print("Invalid input. Please enter a valid book ID.")
 
-            elif choice == '0':
-                break
-
+        elif choice == '4':
+            title = input("Enter the book title (or part of it): ")
+            books = search_book(conn, title)
+            if books:
+                print("Search results:")
+                for book in books:
+                    print(f"ID: {book[0]}, Title: {book[1]}, Author: {book[2]}, Qty: {book[3]}")
             else:
-                print("Invalid choice. Please try again.")
-   
-    except sqlite3.Error as e:
-        print("Database error:", e)
+                print("No books found matching the search criteria.")
 
-    except Exception as e:
-        print("An unexpected error occurred:", e)
-        
-    finally:
-        conn.close()
+        elif choice == '0':
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+    conn.close()
 
 if __name__ == "__main__":
     main()
